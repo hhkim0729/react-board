@@ -1,100 +1,127 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useReducer, useRef, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import List from './routes/List';
 import Write from './routes/Write';
 import Update from './routes/Update';
 import Detail from './routes/Detail';
 
+const initialState = {
+  list: [],
+  id: 0,
+  menu: 'List',
+};
+
+export const GET_LOCAL_STORAGE = 'GET_LOCAL_STORAGE';
+export const ADD_ITEM = 'ADD_ITEM';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const INCREASE_VIEWS = 'INCREASE_VIEWS';
+export const CHANGE_MENU = 'CHANGE_MENU';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case GET_LOCAL_STORAGE: {
+      const localList = localStorage.getItem('list');
+      const list = localList ? JSON.parse(localList) : [];
+      const localId = localStorage.getItem('id');
+      const id = localId ? parseInt(localId) : 0;
+      return {
+        ...state,
+        list,
+        id,
+      };
+    }
+    case ADD_ITEM: {
+      const list = [...state.list, action.item];
+      const id = state.id + 1;
+      return {
+        ...state,
+        list,
+        id,
+      };
+    }
+    case UPDATE_ITEM: {
+      const index = state.list.findIndex((item) => item.id === action.item.id);
+      const list = [...state.list];
+      list.splice(index, 1, action.item);
+      return {
+        ...state,
+        list,
+      };
+    }
+    case DELETE_ITEM: {
+      const list = state.list.filter((item) => item.id !== action.id);
+      return {
+        ...state,
+        list,
+      };
+    }
+    case INCREASE_VIEWS: {
+      const index = state.list.findIndex((item) => item.id === action.id);
+      const list = [...state.list];
+      list[index].views += 1;
+
+      return {
+        ...state,
+        list,
+      };
+    }
+    case CHANGE_MENU: {
+      return {
+        ...state,
+        menu: action.menu,
+      };
+    }
+    default:
+      return { ...state };
+  }
+};
+
+export const getLocalItem = (id) => {
+  const localList = localStorage.getItem('list');
+  const list = localList ? JSON.parse(localList) : [];
+  const listItem = list.find((item) => item.id === id);
+  return listItem;
+};
+
 const Board = () => {
-  const [list, setList] = useState([]);
-  const id = useRef(0);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { list, id, menu } = state;
   const isMount = useRef(true);
 
   useEffect(() => {
     if (!isMount.current) {
       localStorage.setItem('list', JSON.stringify(list));
-      localStorage.setItem('id', id.current);
+      localStorage.setItem('id', id);
     }
-  }, [list]);
+  }, [id, list]);
 
   useEffect(() => {
-    const localList = localStorage.getItem('list');
-    if (localList) {
-      setList(JSON.parse(localList));
-    }
-    const localId = localStorage.getItem('id');
-    if (localId) {
-      id.current = parseInt(localId);
-    }
+    dispatch({ type: GET_LOCAL_STORAGE });
     isMount.current = false;
   }, []);
 
-  const addListItem = useCallback((listItem) => {
-    setList((prevList) => {
-      return [...prevList, listItem];
-    });
-    id.current += 1;
-  }, []);
-
-  const updaeListItem = useCallback(
-    (listItem) => {
-      const { id, title, content, date, views } = listItem;
-      const index = list.findIndex((item) => item.id === id);
-      const newList = [...list];
-      newList.splice(index, 1, {
-        id,
-        title,
-        content,
-        date,
-        views,
-      });
-      setList(newList);
-    },
-    [list]
-  );
-
-  const deleteListItem = useCallback(
-    (id) => {
-      const newList = list.filter((item) => item.id !== id);
-      setList(newList);
-    },
-    [list]
-  );
-
-  const increaseViews = useCallback(
-    (id) => () => {
-      const index = list.findIndex((item) => item.id === id);
-      const newList = [...list];
-      newList[index].views += 1;
-      setList(newList);
-    },
-    [list]
-  );
-
   return (
     <BrowserRouter>
+      <h1>{menu}</h1>
       <Route
         path="/"
         exact={true}
-        render={() => <List list={list} increaseViews={increaseViews} />}
+        render={() => <List list={list} dispatch={dispatch} />}
       />
       <Route
         path="/write"
         render={(routeProps) => (
-          <Write addListItem={addListItem} id={id.current} {...routeProps} />
+          <Write id={id} dispatch={dispatch} {...routeProps} />
         )}
       />
       <Route
         path="/update/:id"
-        render={(routeProps) => (
-          <Update updaeListItem={updaeListItem} {...routeProps} />
-        )}
+        render={(routeProps) => <Update dispatch={dispatch} {...routeProps} />}
       />
       <Route
         path="/detail/:id"
-        render={(routeProps) => (
-          <Detail deleteListItem={deleteListItem} {...routeProps} />
-        )}
+        render={(routeProps) => <Detail dispatch={dispatch} {...routeProps} />}
       />
     </BrowserRouter>
   );

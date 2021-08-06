@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useEffect, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { getLocalItem, DELETE_ITEM, CHANGE_MENU } from '../Board';
 
-const Detail = ({ deleteListItem, location, history }) => {
-  const { item } = location.state;
-  const { id, title, content, date, views } = item;
+const Detail = memo(({ dispatch, match, history }) => {
+  const item = getLocalItem(parseInt(match.params.id));
 
-  const onClickDelete = () => {
-    deleteListItem(id);
-    history.push('/');
-  };
+  useEffect(() => {
+    dispatch({ type: CHANGE_MENU, menu: 'Detail' });
+  }, [dispatch]);
+
+  const onClickDelete = useCallback(() => {
+    if (item) {
+      dispatch({ type: DELETE_ITEM, item: item.id });
+      history.push('/');
+    }
+  }, [dispatch, history, item]);
 
   return (
     <div>
       {item ? (
         <div>
-          <h1>view</h1>
-          <div>{title}</div>
+          <div>{item.title}</div>
           <div>
-            {date} {views}
+            {item.date} {item.views}
           </div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>{content}</div>
-          <Link
-            to={{
-              pathname: `/update/${id}`,
-              state: { item },
-            }}
-          >
-            수정
-          </Link>
+          <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div>
+          <Link to={`/update/${item.id}`}>수정</Link>
           <button onClick={onClickDelete}>삭제</button>
           <Link to="/">목록</Link>
         </div>
       ) : (
-        <div>error</div>
+        <div>
+          not found <Link to="/">list</Link>
+        </div>
       )}
     </div>
   );
-};
+});
 
 export default Detail;

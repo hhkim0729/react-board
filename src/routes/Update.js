@@ -1,20 +1,24 @@
 import React, { useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { getLocalItem, UPDATE_ITEM, CHANGE_MENU } from '../Board';
 import useInputs from '../useInputs';
 
-const Update = memo(({ updaeListItem, history, location }) => {
-  const { item } = location.state;
+const Update = memo(({ dispatch, match, history }) => {
+  const item = getLocalItem(parseInt(match.params.id));
   const [state, onChangeInput] = useInputs({
-    title: item.title,
-    content: item.content,
+    title: item ? item.title : '',
+    content: item ? item.content : '',
   });
   const { title, content } = state;
   const inputTitle = useRef(null);
   const inputContent = useRef(null);
 
   useEffect(() => {
-    inputTitle.current.focus();
-  }, []);
+    dispatch({ type: CHANGE_MENU, menu: 'Update' });
+    if (inputTitle.current) {
+      inputTitle.current.focus();
+    }
+  }, [dispatch]);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -27,37 +31,37 @@ const Update = memo(({ updaeListItem, history, location }) => {
     } else {
       item.title = title;
       item.content = content;
-      updaeListItem(item);
+      dispatch({ type: UPDATE_ITEM, item });
     }
-    history.push({
-      pathname: `/detail/${item.id}`,
-      state: {
-        item,
-      },
-    });
+    history.push(`/detail/${item.id}`);
   };
 
   return (
     <div>
-      <h1>update</h1>
-      <form onSubmit={onSubmitForm}>
-        <input
-          ref={inputTitle}
-          placeholder="title"
-          name="title"
-          value={title}
-          onChange={onChangeInput}
-        />
-        <textarea
-          ref={inputContent}
-          placeholder="content"
-          name="content"
-          value={content}
-          onChange={onChangeInput}
-        />
-        <button type="submit">submit</button>
-        <Link to="/">cancel</Link>
-      </form>
+      {item ? (
+        <form onSubmit={onSubmitForm}>
+          <input
+            ref={inputTitle}
+            placeholder="title"
+            name="title"
+            value={title}
+            onChange={onChangeInput}
+          />
+          <textarea
+            ref={inputContent}
+            placeholder="content"
+            name="content"
+            value={content}
+            onChange={onChangeInput}
+          />
+          <button type="submit">submit</button>
+          <Link to="/">cancel</Link>
+        </form>
+      ) : (
+        <div>
+          not found <Link to="/">list</Link>
+        </div>
+      )}
     </div>
   );
 });

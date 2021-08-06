@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import useInputs from '../useInputs';
+import { ADD_ITEM, CHANGE_MENU } from '../Board';
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -9,7 +10,7 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-const Write = memo(({ addListItem, id, history }) => {
+const Write = memo(({ id, dispatch, history }) => {
   const item = {};
   const [state, onChangeInput] = useInputs({ title: '', content: '' });
   const { title, content } = state;
@@ -17,8 +18,9 @@ const Write = memo(({ addListItem, id, history }) => {
   const inputContent = useRef(null);
 
   useEffect(() => {
+    dispatch({ type: CHANGE_MENU, menu: 'Write' });
     inputTitle.current.focus();
-  }, []);
+  }, [dispatch]);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -34,19 +36,13 @@ const Write = memo(({ addListItem, id, history }) => {
       item.content = content;
       item.date = formatDate(new Date());
       item.views = 0;
-      addListItem(item);
+      dispatch({ type: ADD_ITEM, item });
     }
-    history.push({
-      pathname: `/detail/${item.id}`,
-      state: {
-        item,
-      },
-    });
+    history.push(`/detail/${item.id}`);
   };
 
   return (
     <div>
-      <h1>write</h1>
       <form onSubmit={onSubmitForm}>
         <input
           ref={inputTitle}

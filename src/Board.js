@@ -41,9 +41,9 @@ const reducer = (state, action) => {
       };
     }
     case UPDATE_ITEM: {
-      const index = state.list.findIndex((item) => item.id === action.item.id);
-      const list = [...state.list];
-      list.splice(index, 1, action.item);
+      const list = state.list.map((item) =>
+        item.id === action.item.id ? action.item : item
+      );
       return {
         ...state,
         list,
@@ -57,10 +57,9 @@ const reducer = (state, action) => {
       };
     }
     case INCREASE_VIEWS: {
-      const index = state.list.findIndex((item) => item.id === action.id);
-      const list = [...state.list];
-      list[index].views += 1;
-
+      const list = state.list.map((item) =>
+        item.id === action.id ? { ...item, views: item.views + 1 } : item
+      );
       return {
         ...state,
         list,

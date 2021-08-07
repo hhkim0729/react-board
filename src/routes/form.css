@@ -1,0 +1,83 @@
+.form {
+  display: grid;
+  grid-template-rows: 1.5fr 7.5fr 1fr;
+  background-color: lemonchiffon;
+  color: darkslategray;
+  width: 90%;
+  min-width: 600px;
+}
+
+.form .input-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 6px double lightsalmon;
+}
+
+.form .input-box input {
+  background-color: transparent;
+  text-align: center;
+  border: none;
+  font-size: 3vh;
+  color: darkslategray;
+  font-family: 'Courier New', Courier, monospace;
+  width: 100%;
+  padding: 20px;
+}
+
+.form .input-box input:focus {
+  outline: none;
+}
+
+.form .input-box input::placeholder {
+  color: lightslategray;
+}
+
+.form .textarea {
+  background-color: transparent;
+  border: none;
+  font-size: 2vh;
+  color: darkslategray;
+  padding: 20px;
+  border-bottom: 1px dotted lightseagreen;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.form .textarea:focus {
+  outline: none;
+}
+
+.form .textarea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.form .textarea::-webkit-scrollbar-thumb {
+  background-color: rgb(149, 212, 209);
+}
+
+.form .textarea::-webkit-scrollbar-track {
+  background-color: rgb(250, 239, 137);
+}
+
+.form .btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  font-size: 3vh;
+}
+
+.form .btn-box span {
+  color: tomato;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+
+.form .btn-box span:hover {
+  color: lightseagreen;
+}
+
+.form .btn-box a {
+  text-decoration: none;
+  color: lightslategray;
+}

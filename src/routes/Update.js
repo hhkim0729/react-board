@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
-import { getLocalItem, UPDATE_ITEM, CHANGE_MENU } from '../Board';
-import useInputs from '../useInputs';
+import { CHANGE_MENU, UPDATE_ITEM } from '../reducers/boardReducer';
+import useInputs from '../hooks/useInputs';
+import { getLocalItem } from '../utils';
+import Error from '../components/Error';
+import './form.css';
 
 const Update = memo(({ dispatch, match, history }) => {
-  const item = getLocalItem(parseInt(match.params.id));
+  const item = getLocalItem(match.params.id);
   const [state, onChangeInput] = useInputs({
     title: item ? item.title : '',
     content: item ? item.content : '',
@@ -20,49 +23,51 @@ const Update = memo(({ dispatch, match, history }) => {
     }
   }, [dispatch]);
 
-  const onSubmitForm = (e) => {
-    e.preventDefault();
+  const onClickSubmit = () => {
     if (!title) {
-      alert('제목을 입력해주세요.');
+      alert('Please enter a title.');
       inputTitle.current.focus();
     } else if (!content) {
-      alert('내용을 입력해주세요.');
+      alert('Please enter the content.');
       inputContent.current.focus();
     } else {
       item.title = title;
       item.content = content;
       dispatch({ type: UPDATE_ITEM, item });
+      history.push(`/detail/${item.id}`);
     }
-    history.push(`/detail/${item.id}`);
   };
 
   return (
-    <div>
+    <>
       {item ? (
-        <form onSubmit={onSubmitForm}>
-          <input
-            ref={inputTitle}
-            placeholder="title"
-            name="title"
-            value={title}
-            onChange={onChangeInput}
-          />
+        <div className="form">
+          <div className="input-box">
+            <input
+              ref={inputTitle}
+              placeholder="title"
+              name="title"
+              value={title}
+              onChange={onChangeInput}
+            />
+          </div>
           <textarea
+            className="textarea"
             ref={inputContent}
             placeholder="content"
             name="content"
             value={content}
             onChange={onChangeInput}
           />
-          <button type="submit">submit</button>
-          <Link to="/">cancel</Link>
-        </form>
-      ) : (
-        <div>
-          not found <Link to="/">list</Link>
+          <div className="btn-box">
+            <span onClick={onClickSubmit}>submit</span>
+            <Link to="/">cancel</Link>
+          </div>
         </div>
+      ) : (
+        <Error />
       )}
-    </div>
+    </>
   );
 });
 

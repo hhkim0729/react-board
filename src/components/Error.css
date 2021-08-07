@@ -1,0 +1,23 @@
+.Error {
+  background-color: lemonchiffon;
+  display: grid;
+  grid-template-rows: 9fr 1fr;
+  align-items: center;
+  text-align: center;
+}
+
+.Error h1 {
+  font-size: 5vh;
+  color: darkslategray;
+}
+
+.Error a {
+  font-size: 3vh;
+  text-decoration: none;
+  color: tomato;
+  transition: color 0.1s ease-in;
+}
+
+.Error a:hover {
+  color: lightseagreen;
+}

@@ -1,0 +1,35 @@
+.ListItem {
+  display: grid;
+  grid-template-columns: 5.5fr 2.5fr 2fr;
+  font-size: 2vh;
+  width: 100%;
+  line-height: 3.5vh;
+  border-bottom: 1px dotted lightseagreen;
+  background-color: lemonchiffon;
+}
+
+.ListItem div {
+  padding: 0 10px 0 10px;
+}
+
+.ListItem .title {
+  overflow: auto;
+  overflow-wrap: break-word;
+}
+
+.ListItem .title a {
+  text-decoration: none;
+  color: darkslategray;
+}
+
+.ListItem .date,
+.ListItem .views {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ListItem .date {
+  border-left: 1px dotted lightslategray;
+  border-right: 1px dotted lightslategray;
+}

@@ -1,0 +1,42 @@
+.List {
+  display: grid;
+  grid-template: 10% 90% / 5.5fr 2.5fr 2fr;
+  color: darkslategray;
+  overflow-y: auto;
+  width: 90%;
+  min-width: 600px;
+}
+
+.List::-webkit-scrollbar {
+  width: 5px;
+}
+
+.List::-webkit-scrollbar-thumb {
+  background-color: rgb(149, 212, 209);
+}
+
+.List::-webkit-scrollbar-track {
+  background-color: rgb(250, 239, 137);
+}
+
+.List .header {
+  background-color: lemonchiffon;
+  font-size: 3vh;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  line-height: 220%;
+  font-weight: normal;
+  border-bottom: 6px double lightsalmon;
+}
+
+.List .header:nth-child(2) {
+  border-left: 1px dotted lightslategray;
+  border-right: 1px dotted lightslategray;
+}
+
+.List .items {
+  grid-column: span 3;
+}

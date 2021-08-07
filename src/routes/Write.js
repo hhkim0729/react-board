@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
-import useInputs from '../useInputs';
-import { ADD_ITEM, CHANGE_MENU } from '../Board';
+import useInputs from '../hooks/useInputs';
+import { ADD_ITEM, CHANGE_MENU } from '../reducers/boardReducer';
+import './form.css';
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -22,13 +23,12 @@ const Write = memo(({ id, dispatch, history }) => {
     inputTitle.current.focus();
   }, [dispatch]);
 
-  const onSubmitForm = (e) => {
-    e.preventDefault();
+  const onClickSubmit = () => {
     if (!title) {
-      alert('제목을 입력해주세요.');
+      alert('Please enter a title.');
       inputTitle.current.focus();
     } else if (!content) {
-      alert('내용을 입력해주세요.');
+      alert('Please enter the content.');
       inputContent.current.focus();
     } else {
       item.id = id;
@@ -37,13 +37,13 @@ const Write = memo(({ id, dispatch, history }) => {
       item.date = formatDate(new Date());
       item.views = 0;
       dispatch({ type: ADD_ITEM, item });
+      history.push(`/detail/${item.id}`);
     }
-    history.push(`/detail/${item.id}`);
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmitForm}>
+    <div className="form">
+      <div className="input-box">
         <input
           ref={inputTitle}
           placeholder="title"
@@ -51,16 +51,19 @@ const Write = memo(({ id, dispatch, history }) => {
           value={title}
           onChange={onChangeInput}
         />
-        <textarea
-          ref={inputContent}
-          placeholder="content"
-          name="content"
-          value={content}
-          onChange={onChangeInput}
-        />
-        <button type="submit">submit</button>
+      </div>
+      <textarea
+        className="textarea"
+        ref={inputContent}
+        placeholder="content"
+        name="content"
+        value={content}
+        onChange={onChangeInput}
+      />
+      <div className="btn-box">
+        <span onClick={onClickSubmit}>submit</span>
         <Link to="/">cancel</Link>
-      </form>
+      </div>
     </div>
   );
 });

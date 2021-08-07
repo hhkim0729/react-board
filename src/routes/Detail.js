@@ -1,9 +1,12 @@
 import React, { useEffect, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
-import { getLocalItem, DELETE_ITEM, CHANGE_MENU } from '../Board';
+import { CHANGE_MENU, DELETE_ITEM } from '../reducers/boardReducer';
+import { getLocalItem } from '../utils';
+import Error from '../components/Error';
+import './Detail.css';
 
 const Detail = memo(({ dispatch, match, history }) => {
-  const item = getLocalItem(parseInt(match.params.id));
+  const item = getLocalItem(match.params.id);
 
   useEffect(() => {
     dispatch({ type: CHANGE_MENU, menu: 'Detail' });
@@ -11,30 +14,31 @@ const Detail = memo(({ dispatch, match, history }) => {
 
   const onClickDelete = useCallback(() => {
     if (item) {
-      dispatch({ type: DELETE_ITEM, item: item.id });
+      dispatch({ type: DELETE_ITEM, id: item.id });
       history.push('/');
     }
   }, [dispatch, history, item]);
 
   return (
-    <div>
+    <>
       {item ? (
-        <div>
-          <div>{item.title}</div>
-          <div>
-            {item.date} {item.views}
+        <div className="Detail">
+          <div className="date">🗓 {item.date}</div>
+          <div className="views">👁 {item.views}</div>
+          <div className="title">
+            <h2>{item.title}</h2>
           </div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div>
-          <Link to={`/update/${item.id}`}>수정</Link>
-          <button onClick={onClickDelete}>삭제</button>
-          <Link to="/">목록</Link>
+          <div className="content">{item.content}</div>
+          <div className="btn-box">
+            <Link to={`/update/${item.id}`}>🖋</Link>
+            <Link to="/">list</Link>
+            <span onClick={onClickDelete}>X</span>
+          </div>
         </div>
       ) : (
-        <div>
-          not found <Link to="/">list</Link>
-        </div>
+        <Error />
       )}
-    </div>
+    </>
   );
 });
 

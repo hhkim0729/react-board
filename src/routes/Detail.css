@@ -1,6 +1,6 @@
 .Detail {
   display: grid;
-  grid-template: 1fr 2fr 6fr 1fr / 1fr 1fr;
+  grid-template: 1fr min-content 6fr 1fr / 1fr 1fr;
   align-items: center;
   text-align: center;
   background-color: lemonchiffon;
@@ -59,6 +59,7 @@
   white-space: pre-wrap;
   border-bottom: 1px dotted lightseagreen;
   text-align: left;
+  line-height: 130%;
 }
 
 .Detail .btn-box {

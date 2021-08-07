@@ -5,7 +5,7 @@ import './List.css';
 
 const List = memo(({ list, dispatch }) => {
   useEffect(() => {
-    dispatch({ type: CHANGE_MENU, menu: 'Travel Diary' });
+    dispatch({ type: CHANGE_MENU, menu: 'List' });
   }, [dispatch]);
 
   return (

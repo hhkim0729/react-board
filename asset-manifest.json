@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/react-board/static/css/main.562e7512.chunk.css",
+    "main.css": "/react-board/static/css/main.2475fc99.chunk.css",
     "main.js": "/react-board/static/js/main.149320ad.chunk.js",
     "main.js.map": "/react-board/static/js/main.149320ad.chunk.js.map",
     "runtime-main.js": "/react-board/static/js/runtime-main.2288a13a.js",
@@ -8,13 +8,13 @@
     "static/js/2.0a07239c.chunk.js": "/react-board/static/js/2.0a07239c.chunk.js",
     "static/js/2.0a07239c.chunk.js.map": "/react-board/static/js/2.0a07239c.chunk.js.map",
     "index.html": "/react-board/index.html",
-    "static/css/main.562e7512.chunk.css.map": "/react-board/static/css/main.562e7512.chunk.css.map",
+    "static/css/main.2475fc99.chunk.css.map": "/react-board/static/css/main.2475fc99.chunk.css.map",
     "static/js/2.0a07239c.chunk.js.LICENSE.txt": "/react-board/static/js/2.0a07239c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2288a13a.js",
     "static/js/2.0a07239c.chunk.js",
-    "static/css/main.562e7512.chunk.css",
+    "static/css/main.2475fc99.chunk.css",
     "static/js/main.149320ad.chunk.js"
   ]
 }

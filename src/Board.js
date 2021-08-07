@@ -32,7 +32,7 @@ const Board = () => {
 
   return (
     <div className="Board">
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className="menu">
           <h1>{menu}</h1>
         </div>

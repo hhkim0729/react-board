@@ -9,7 +9,7 @@
 .Board .menu {
   background-color: lightseagreen;
   border-radius: 150%;
-  width: 550px;
+  width: 400px;
   justify-self: center;
   align-self: center;
 }
@@ -25,9 +25,11 @@
 
 .Board .btn-write {
   width: 95%;
+  max-width: 800px;
   line-height: 200%;
   text-align: right;
   align-self: center;
+  justify-self: center;
 }
 
 .Board .btn-write a {
@@ -45,7 +47,9 @@
 .Board .wrap {
   width: 100%;
   min-width: 600px;
+  max-width: 900px;
   display: flex;
   justify-content: center;
   overflow: hidden;
+  justify-self: center;
 }
